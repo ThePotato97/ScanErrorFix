@@ -30,15 +30,15 @@ namespace ScanFix
                         Random random = new Random(StartOfRound.Instance.randomMapSeed + 91);
                         int totalScrap = 0;
                         int totalValue = 0;
-                        int totalScrapValueRange = 0;
-                        foreach (var grabbable in Object.FindObjectsOfType<GrabbableObject>())
+                        foreach (var grabbable in FindObjectsOfType<GrabbableObject>())
                         {
                             var itemProps = grabbable.itemProperties;
-                            if (!itemProps.isScrap && grabbable.isInShipRoom && grabbable.isInElevator && (itemProps.minValue == 0 && itemProps.maxValue == 0)) continue;
+                            var isEligibleItem = !itemProps.isScrap && grabbable is { isInShipRoom: true, isInElevator: true }
+                                                     && itemProps is { minValue: 0, maxValue: 0 };
+                            if (!isEligibleItem) continue;
 
                             int minValue = Mathf.Min(itemProps.minValue, itemProps.maxValue);
                             int maxValue = Mathf.Max(itemProps.minValue, itemProps.maxValue);
-                            totalScrapValueRange += maxValue - minValue;
 
                             int randomValue = random.Next(minValue, maxValue);
                             int clampedValue = Mathf.Clamp(randomValue, grabbable.scrapValue - 6 * totalScrap, grabbable.scrapValue + 9 * totalScrap);
