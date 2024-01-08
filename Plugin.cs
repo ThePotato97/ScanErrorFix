@@ -18,7 +18,7 @@ namespace ScanFix
             Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is patched!");
         }
         
-        [HarmonyPatch(typeof(Terminal), "TextPostProcess")]
+        [HarmonyPatch(typeof(Terminal), nameof(Terminal.TextPostProcess))]
         internal class TextProcessPatch
         {
             private static bool Prefix(ref string modifiedDisplayText, TerminalNode node)
