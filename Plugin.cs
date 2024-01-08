@@ -29,8 +29,8 @@ namespace ScanFix
                     try
                     {
                         Random random = new Random(StartOfRound.Instance.randomMapSeed + 91);
-                        int totalScrap = 0;
-                        int totalValue = 0;
+                        var totalScrap = 0;
+                        var totalValue = 0;
                         var grabbablesWithIndex = FindObjectsOfType<GrabbableObject>()
                                   .Select((grabbable, index) => new { grabbable, index });
                         foreach (var item in grabbablesWithIndex)
@@ -43,11 +43,11 @@ namespace ScanFix
 
                             if (!isEligibleItem) continue;
 
-                            int minValue = Mathf.Min(itemProps.minValue, itemProps.maxValue);
-                            int maxValue = Mathf.Max(itemProps.minValue, itemProps.maxValue);
+                            var minValue = Mathf.Min(itemProps.minValue, itemProps.maxValue);
+                            var maxValue = Mathf.Max(itemProps.minValue, itemProps.maxValue);
 
-                            int randomValue = random.Next(minValue, maxValue);
-                            int clampedValue = Mathf.Clamp(randomValue, grabbable.scrapValue - 6 * index, grabbable.scrapValue + 9 * index);
+                            var randomValue = random.Next(minValue, maxValue);
+                            var clampedValue = Mathf.Clamp(randomValue, grabbable.scrapValue - 6 * index, grabbable.scrapValue + 9 * index);
                             totalValue += clampedValue;
                             totalScrap++;
                         }
