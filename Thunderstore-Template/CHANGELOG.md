@@ -1,3 +1,5 @@
+## 1.0.4
+* Fixed the random value generation offsets to be the same as vanilla
 ## 1.0.3
 * Renamed the dll to match the mod name and to avoid conflicts with other mods
 * Insiginificant code changes
