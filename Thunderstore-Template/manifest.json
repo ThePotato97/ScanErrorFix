@@ -1,0 +1,7 @@
+{
+    "name": "scanForItemsFix",
+    "version_number": "1.0.2",
+    "website_url": "https://github.com/ThePotato97/ScanErrorFix",
+    "description": "Fixes an error that occurs when scanning for scrap",
+    "dependencies": []
+}
