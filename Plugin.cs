@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Random = System.Random;
@@ -30,21 +31,27 @@ namespace ScanFix
                         Random random = new Random(StartOfRound.Instance.randomMapSeed + 91);
                         int totalScrap = 0;
                         int totalValue = 0;
-                        foreach (var grabbable in FindObjectsOfType<GrabbableObject>())
+                        var grabbablesWithIndex = FindObjectsOfType<GrabbableObject>()
+                                  .Select((grabbable, index) => new { grabbable, index });
+                        foreach (var item in grabbablesWithIndex)
                         {
+                            var grabbable = item.grabbable;
+                            var index = item.index;
                             var itemProps = grabbable.itemProperties;
-                            var isEligibleItem = !itemProps.isScrap && grabbable is { isInShipRoom: true, isInElevator: true }
-                                                     && itemProps is { minValue: 0, maxValue: 0 };
+                            var isEligibleItem = grabbable is { isInShipRoom: false, isInElevator: false }
+                                                     && itemProps is { minValue: > 0, maxValue: > 0, isScrap: true };
+
                             if (!isEligibleItem) continue;
 
                             int minValue = Mathf.Min(itemProps.minValue, itemProps.maxValue);
                             int maxValue = Mathf.Max(itemProps.minValue, itemProps.maxValue);
 
                             int randomValue = random.Next(minValue, maxValue);
-                            int clampedValue = Mathf.Clamp(randomValue, grabbable.scrapValue - 6 * totalScrap, grabbable.scrapValue + 9 * totalScrap);
+                            int clampedValue = Mathf.Clamp(randomValue, grabbable.scrapValue - 6 * index, grabbable.scrapValue + 9 * index);
                             totalValue += clampedValue;
                             totalScrap++;
                         }
+                        
                         modifiedDisplayText = modifiedDisplayText.Replace("[scanForItems]", $"There are {totalScrap} objects outside the ship, totalling at an approximate value of ${totalValue}.");
                     } catch
                     {
