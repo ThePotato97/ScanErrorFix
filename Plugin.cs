@@ -45,7 +45,7 @@ namespace ScanFix
                             totalValue += clampedValue;
                             totalScrap++;
                         }
-                        modifiedDisplayText = modifiedDisplayText.Replace("[scanForItems]", string.Format("HACKED There are {0} objects outside the ship, totalling at an approximate value of ${1}.", totalScrap, totalValue));
+                        modifiedDisplayText = modifiedDisplayText.Replace("[scanForItems]", string.Format("There are {0} objects outside the ship, totalling at an approximate value of ${1}.", totalScrap, totalValue));
                     } catch
                     {
                         modifiedDisplayText = modifiedDisplayText.Replace("[scanForItems]", "FAILED TO SCAN FOR ITEMS");
